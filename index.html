@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Raw-data widget tests</title>
+	
+	<link rel="stylesheet" href="http://onc.danycabrera.com/oncdw.0.css" />
+    <script src="http://onc.danycabrera.com/oncdw.0.min.js" id="oncdw" data-token="22ec8261-50e4-44f3-8e35-a4cf80454ff5"></script>
+</head>
+<body>
+
+    <section
+        class="oncWidget" data-widget="rawValue"
+        deviceCode="CORK-1364A"
+        options="delay: 1000, formatter: formatCORK1364A, maxLogRows: 100"
+    ></section>
+<section
+        class="oncWidget" data-widget="rawValue"
+        deviceCode="CORK-1364A"
+        options="delay: 1000, maxLogRows: 100"
+    ></section>
+    
+    <script>
+        // A custom formatter that returns a formatted string
+        function myFormat(text) {
+            //text = "hello: " + text;
+            return text;
+        }
+        function formatCORK1364A(text) {
+            var elements = [text.substr(0,8),text.substr(8,2),text.substr(10,6),
+                            text.substr(16,8),text.substr(24,8),text.substr(32,8),
+                            text.substr(40,8),text.substr(48,8),text.substr(56,2)];
+            //text = "hello: " + text;
+            return elements.join(' ');
+        }
+    </script>
+
+</body>
+</html>
