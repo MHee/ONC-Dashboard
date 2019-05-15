@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <title>ONC Data Widgets Demo</title>
+    <link rel="stylesheet" href="http://onc.danycabrera.com/oncdw.0.css" />
+    <script src="http://onc.danycabrera.com/oncdw.0.min.js" id="oncdw" data-token="22ec8261-50e4-44f3-8e35-a4cf80454ff5"></script>
+    <script src="http://onc.danycabrera.com/engines/dygraphs.min.js"></script>
+	<script src="http://onc.danycabrera.com/engines/plotly.min.js"></script>
+    <script src="http://onc.danycabrera.com/engines/chartjs.min.js"></script>
+</head>
+<body>
+    <h1>ONC Data Widgets Demo</h1>
+
+    <h2>Discovery services</h2>
+
+    <p>Locations with a name that contains "mill"</p>
+
+    <section class="oncWidget" data-widget="locations" locationName="mill"></section>
+
+    <p>API services supported: locations, deployments, deviceCategories, devices, properties, dataProducts</p>
+
+    
+    <h2>Data product delivery services</h2>
+    
+    <p>A conductivity plot for the last 5 minutes (click to zoom):</p>
+    
+    <figure class="oncWidget" data-widget="image"
+        locationCode="CRIP.C1"
+        propertyCode="conductivity"
+        deviceCategoryCode="CTD"
+        dateFrom="last5m"
+        options="theme: gallery"
+    ></figure>
+    
+    <p>Request and download a TXT data product for the previous plot:</p>
+    
+    <section class="oncWidget" data-widget="download"
+        locationCode="CRIP.C1"
+        propertyCode="conductivity"
+        deviceCategoryCode="CTD"
+        dateFrom="last5m"
+        dataProductCode="TSSD"
+        extension="txt"
+        dpo_dataGaps="0"
+    ></section>
+    
+
+    <h2>QuickPlot Internal service</h2>
+
+    <p>QuickPlot gallery of sensors from a CTD, last 24 hours (click to zoom):</p>
+
+    <section class="oncWidgetGroup col-4" dateFrom="last24h" source="quickPlot" options="theme: gallery">
+        <figure class="oncWidget" data-widget="image" sensorId="21248"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21249"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21250"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21252"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21254"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21255"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21256"></figure>
+        <figure class="oncWidget" data-widget="image" sensorId="21257"></figure>
+    </section>
+
+    <h2>Interactive plots</h2>
+    
+    <p>2 overlapped time-series of the last 24h with CSV download (source: plottingUtility).<br>
+        Includes Min/Max range. Uses the Dygraphs light-weight library, ideal for dashboards with dozens of plots.</p>
+    
+    <figure class="oncWidget" data-widget="plot" source="plottingUtility"
+        sensorId="21248, 21249"	
+        dateFrom="last24h"
+        points="1000"
+        engine='name: dygraphs'
+        options="download: true"
+    ></figure>
+
+    <p>2 Columns widget group with a simple time-series and a reversed XY plot (source: scalardata).<br>This example uses the Plotly library to draw 10,000 points.</p>
+    
+    <section class="oncWidgetGroup col-2"  source="scalardata" engine="name: plotly">
+
+        <figure class="oncWidget" data-widget="plot"
+            locationCode="YPVPP"
+            deviceCategoryCode="CTD"
+            propertyCode="salinity"
+            dateFrom="January 16, 2016"
+            dateTo="plus10m"
+        ></figure>
+
+        <figure class="oncWidget" data-widget="plot"
+            dateFrom="2017-06-03T17:00:00.000Z"
+            dateTo="plus1w"
+            locationCode="PVIP.C1"
+            deviceCategoryCode="CTD"
+            x="conductivity"
+            y="salinity"
+            engine='reversed: true'
+            options="report: true"
+        ></figure>
+
+    </section>
+
+    <p>A different Plotly example with 4 sensors, stacked in zoom-synchronized rows (source: plottingUtility). Controls the widget size with CSS styles.</p>
+    
+    <figure class="oncWidget" data-widget="plot" source="plottingUtility" 
+        dateFrom="last1d"
+        sensorId="21248, 21249, 21250, 21252"
+        points="200"
+        engine='name: plotly, stack: rows, stackTitles: true'
+        style="height: 500px"
+    ></figure>
+    
+    
+    <p>A real time plot of a sensor (source: plottingUtility). Requests are sent every 28 seconds (duration - bufferTime) to avoid server overload.</p>
+    <figure class="oncWidget" data-widget="rtplot" source="plottingUtility"
+        dateFrom="last30s"
+        sensorId="36759"
+        points="0"
+        engine="name: chartjs, bufferTime: 2000, speed: 80000, delay: 1000"
+        style="width:480px; height: 300px"
+    ></figure>
+</body>
+</html>
